@@ -9,7 +9,7 @@ try {
 const getPoolConfig = (): PoolConfig => {
   const connStr = process.env.DATABASE_URL;
   
-  if (connStr) {
+  if (connStr && (connStr.startsWith('postgres://') || connStr.startsWith('postgresql://'))) {
     try {
       const cleanUrl = connStr.split('?')[0];
       const parsed = new URL(cleanUrl);
@@ -24,9 +24,7 @@ const getPoolConfig = (): PoolConfig => {
         idleTimeoutMillis: 30000,
         connectionTimeoutMillis: 10000,
       } as PoolConfig;
-    } catch (e) {
-      console.warn('Failed to parse DATABASE_URL, falling back to discrete config:', e);
-    }
+    } catch {}
   }
 
   const host = process.env.POSTGRES_HOST || process.env.host || 'localhost';
