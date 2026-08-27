@@ -1,0 +1,35 @@
+name: CI Build & Typecheck
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    name: Build & Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Typecheck TypeScript
+        run: npm run type-check
+
+      - name: Build Next.js Production Bundle
+        run: npm run build
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET || 'ci-test-jwt-secret-key-32chars-minimum' }}
+          NEXT_PUBLIC_APP_URL: 'http://localhost:3001'
+          DATABASE_URL: 'postgresql://postgres:test@localhost:5432/postgres'

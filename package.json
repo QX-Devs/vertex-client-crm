@@ -1,12 +1,33 @@
 {
   "name": "vertex-client-crm",
   "version": "1.0.0",
+  "description": "Vertex AI Client Portal & CRM Suite for Multi-Channel Messaging, Leads, Bookings, and Service Configuration",
+  "author": "QX-Devs <32301001140@std.bau.edu.jo>",
+  "license": "MIT",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/QX-Devs/vertex-client-crm.git"
+  },
+  "keywords": [
+    "vertex-crm",
+    "client-portal",
+    "nextjs",
+    "typescript",
+    "tailwind-css",
+    "whatsapp-crm",
+    "instagram-crm",
+    "dark-mode",
+    "arabic-i18n",
+    "postgresql",
+    "supabase"
+  ],
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
