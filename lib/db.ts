@@ -7,25 +7,33 @@ try {
 } catch {}
 
 const getPoolConfig = (): PoolConfig => {
-  if (process.env.DATABASE_URL) {
-    return {
-      connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false },
-      max: 20,
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 10000,
-      lookup: (hostname: string, options: any, callback: any) => {
-        const cb = typeof options === 'function' ? options : callback;
-        dns.lookup(hostname, { family: 4 }, cb);
-      }
-    } as any;
+  const connStr = process.env.DATABASE_URL;
+  
+  if (connStr) {
+    try {
+      const cleanUrl = connStr.split('?')[0];
+      const parsed = new URL(cleanUrl);
+      return {
+        host: parsed.hostname,
+        port: parseInt(parsed.port || '5432', 10),
+        user: decodeURIComponent(parsed.username),
+        password: decodeURIComponent(parsed.password),
+        database: parsed.pathname.replace(/^\//, '') || 'postgres',
+        ssl: { rejectUnauthorized: false },
+        max: 10,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 10000,
+      } as PoolConfig;
+    } catch (e) {
+      console.warn('Failed to parse DATABASE_URL, falling back to discrete config:', e);
+    }
   }
 
-  const host = process.env.POSTGRES_HOST || process.env.host;
+  const host = process.env.POSTGRES_HOST || process.env.host || 'localhost';
   const port = parseInt(process.env.POSTGRES_PORT || process.env.port || '5432', 10);
-  const user = process.env.POSTGRES_USER || process.env.user;
-  const password = process.env.POSTGRES_PASSWORD || process.env.password;
-  const database = process.env.POSTGRES_DB || process.env.database;
+  const user = process.env.POSTGRES_USER || process.env.user || 'postgres';
+  const password = process.env.POSTGRES_PASSWORD || process.env.password || '';
+  const database = process.env.POSTGRES_DB || process.env.database || 'postgres';
 
   return {
     host,
@@ -34,14 +42,10 @@ const getPoolConfig = (): PoolConfig => {
     database,
     port,
     ssl: { rejectUnauthorized: false },
-    max: 20,
+    max: 10,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 10000,
-    lookup: (hostname: string, options: any, callback: any) => {
-      const cb = typeof options === 'function' ? options : callback;
-      dns.lookup(hostname, { family: 4 }, cb);
-    }
-  } as any;
+  } as PoolConfig;
 };
 
 const globalAny = globalThis as any;
