@@ -31,5 +31,5 @@ jobs:
         run: npm run build
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET || 'ci-test-jwt-secret-key-32chars-minimum' }}
-          NEXT_PUBLIC_APP_URL: 'http://localhost:3001'
-          DATABASE_URL: 'postgresql://postgres:test@localhost:5432/postgres'
+          NEXT_PUBLIC_APP_URL: 'https://example.com'
+          DATABASE_URL: 'postgresql://ci_user:ci_pass@localhost:5432/ci_db'

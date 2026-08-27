@@ -4,8 +4,8 @@ function getTransporter() {
   const host = process.env.SMTP_HOST || 'smtp.gmail.com';
   const port = parseInt(process.env.SMTP_PORT || '465', 10);
   const secure = process.env.SMTP_SECURE === 'true' || port === 465;
-  const user = process.env.SMTP_USER || 'aivertex.noreply@gmail.com';
-  const pass = process.env.SMTP_PASS || 'bdmfwweubyximevh';
+  const user = process.env.SMTP_USER || '';
+  const pass = process.env.SMTP_PASS || '';
 
   return nodemailer.createTransport({
     host,
@@ -18,7 +18,7 @@ function getTransporter() {
   });
 }
 
-const FROM_HEADER = process.env.SMTP_FROM || '"Vertex CRM" <aivertex.noreply@gmail.com>';
+const FROM_HEADER = process.env.SMTP_FROM || '"Vertex CRM" <noreply@vertex-crm.com>';
 
 export async function sendLoginCodeEmail(
   to: string,
