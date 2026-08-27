@@ -1,0 +1,17 @@
+{
+  "name": "Vertex Client Portal",
+  "short_name": "Vertex CRM",
+  "description": "Unified AI-powered client portal for managing customer conversations, leads, and orders.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
